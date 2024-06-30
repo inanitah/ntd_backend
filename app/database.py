@@ -22,3 +22,18 @@ def create_connection():
         print(f"The error '{e}' occurred")
 
     return connection
+
+
+def create_test_connection():
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host='localhost',
+            database='calculator',
+            user='calculator_user',
+            password='password'
+        )
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
+    return connection

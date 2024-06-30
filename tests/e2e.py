@@ -1,14 +1,30 @@
 import pytest
+import mysql.connector
+from mysql.connector import Error
 from fastapi.testclient import TestClient
 from app.main import app
-from app.database import create_connection
 
 client = TestClient(app)
 
 
+def create_test_connection():
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host='localhost',
+            database='calculator',
+            user='calculator_user',
+            password='password'
+        )
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
+    return connection
+
+
 @pytest.fixture(scope="module", autouse=True)
 def setup_and_teardown():
-    connection = create_connection()
+    connection = create_test_connection()
     cursor = connection.cursor()
 
     # Drop foreign keys first

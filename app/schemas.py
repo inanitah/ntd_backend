@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -45,6 +47,7 @@ class Record(BaseModel):
     amount: float
     user_balance: float
     operation_response: str
+    deleted: Optional[bool] = False
 
     class Config:
         orm_mode = True

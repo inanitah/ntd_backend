@@ -5,6 +5,7 @@ from app import crud, schemas
 from app.auth import get_current_user, authenticate_user, get_password_hash
 from fastapi.security import OAuth2PasswordRequestForm
 
+from app.consts import Status
 from app.crud import connection
 
 router = APIRouter()
@@ -24,7 +25,7 @@ def create_user(user: schemas.UserCreate):
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
     hashed_password = get_password_hash(user.password)
-    return crud.create_user(user=user, hashed_password=hashed_password)
+    return crud.create_user(user=user, hashed_password=hashed_password, status=Status.ACTIVE)
 
 
 @router.get("/operations/", response_model=list)
@@ -91,3 +92,18 @@ def calculate(request: CalculateRequest, user: schemas.User = Depends(get_curren
     record = crud.get_record(record_id)
     return schemas.Record(**record)
 
+
+@router.delete("/records/{id}", response_model=schemas.Record)
+def delete_record(id: int, db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):
+    record = crud.get_record(db, record_id=id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Record not found")
+    if record.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this record")
+    return crud.soft_delete_record(db=db, record_id=id)
+
+
+@router.get("/records/", response_model=list[schemas.Record])
+def read_records(skip: int = 0, limit: int = 10, search: str = None, db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):
+    records = crud.get_records(db=db, skip=skip, limit=limit, search=search, user_id=user.id)
+    return records
