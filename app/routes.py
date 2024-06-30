@@ -94,16 +94,16 @@ def calculate(request: CalculateRequest, user: schemas.User = Depends(get_curren
 
 
 @router.delete("/records/{id}", response_model=schemas.Record)
-def delete_record(id: int, db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):
-    record = crud.get_record(db, record_id=id)
+def delete_record(id: int, user: schemas.User = Depends(get_current_user)):
+    record = crud.get_record(record_id=id)
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
     if record.user_id != user.id:
         raise HTTPException(status_code=403, detail="Not authorized to delete this record")
-    return crud.soft_delete_record(db=db, record_id=id)
+    return crud.soft_delete_record(record_id=id)
 
 
-@router.get("/records/", response_model=list[schemas.Record])
-def read_records(skip: int = 0, limit: int = 10, search: str = None, db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):
-    records = crud.get_records(db=db, skip=skip, limit=limit, search=search, user_id=user.id)
+@router.get("/records/", response_model=list)
+def read_records(skip: int = 0, limit: int = 10, search: str = None, user: schemas.User = Depends(get_current_user)):
+    records = crud.get_records(skip=skip, limit=limit, search=search, user_id=user.id)
     return records
