@@ -7,7 +7,8 @@ app = FastAPI()
 app.include_router(routes.router)
 
 origins = [
-    "http://localhost:3001",  # React app's origin
+    "http://localhost:3001",
+    "https://ntdfrontend-702d74153fdf.herokuapp.com"
 ]
 
 app.add_middleware(
