@@ -5,10 +5,10 @@ from app.database import db_session_middleware
 
 app = FastAPI()
 
-app.include_router(routes.router)
+app.include_router(routes.router, prefix="/api/v1")  # If are new version add the routes here
 
 origins = [
-    "http://localhost:3001",
+    "http://localhost:3000",  # Change to your local env
     "https://ntdfrontend-702d74153fdf.herokuapp.com"
 ]
 
