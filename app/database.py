@@ -1,5 +1,5 @@
 import mysql.connector
-from mysql.connector import Error, pooling
+from mysql.connector import Error
 from fastapi import Request, Response
 import os
 from dotenv import load_dotenv
@@ -7,29 +7,16 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Database configuration
-dbconfig = dict(
-    host=os.getenv('DB_HOST'),
-    database=os.getenv('DB_NAME'),
-    user=os.getenv('DB_USER'),
-    password=os.getenv('DB_PASSWORD')
-)
-
-# Create a connection pool
-try:
-    connection_pool = mysql.connector.pooling.MySQLConnectionPool(
-        pool_name="mypool",
-        pool_size=int(os.getenv('DB_POOL_SIZE', 5)),  # Default pool size is 5 if not specified
-        **dbconfig
-    )
-    print("Connection pool created successfully")
-except Error as e:
-    print(f"Error creating connection pool: {e}")
-
 
 # Function to create a database connection
 def create_connection():
     try:
+        dbconfig = dict(
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD')
+        )
         connection = mysql.connector.connect(**dbconfig)
         if connection.is_connected():
             print("Connected to MySQL database")
@@ -41,6 +28,26 @@ def create_connection():
 
 # Middleware to handle database connections
 async def db_session_middleware(request: Request, call_next):
+    # Database configuration
+    dbconfig = dict(
+        host=os.getenv('DB_HOST'),
+        database=os.getenv('DB_NAME'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD')
+    )
+
+    # Create a connection pool
+    try:
+        connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+            pool_name="mypool",
+            pool_size=int(os.getenv('DB_POOL_SIZE', 5)),
+            **dbconfig
+        )
+        print("Connection pool created successfully")
+    except Error as e:
+        print(f"Error creating connection pool: {e}")
+        raise
+
     response = Response("Internal server error", status_code=500)
     try:
         request.state.db = connection_pool.get_connection()

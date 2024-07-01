@@ -96,7 +96,7 @@ def setup_and_teardown():
 
 
 def test_create_user():
-    response = client.post("/users/", json={"username": "testuser", "password": "testpassword"})
+    response = client.post("/api/v1/users/", json={"username": "testuser", "password": "testpassword"})
     assert response.status_code == 200
     data = response.json()
     assert data["username"] == "testuser"
@@ -104,7 +104,7 @@ def test_create_user():
 
 
 def test_login():
-    response = client.post("/token", data={"username": "testuser", "password": "testpassword"})
+    response = client.post("/api/v1/token", data={"username": "testuser", "password": "testpassword"})
     assert response.status_code == 200
     data = response.json()
     assert "username" in data
@@ -112,7 +112,7 @@ def test_login():
 
 
 def test_create_operation():
-    response = client.post("/operations/", json={"type": "addition", "cost": 1.0})
+    response = client.post("/api/v1/operations/", json={"type": "addition", "cost": 1.0})
     assert response.status_code == 200
     data = response.json()
     assert data["type"] == "addition"
@@ -121,16 +121,16 @@ def test_create_operation():
 
 
 def test_calculate():
-    response = client.post("/operations/", json={"type": "addition", "cost": 1.0})
+    response = client.post("/api/v1/operations/", json={"type": "addition", "cost": 1.0})
     assert response.status_code == 200
     operation_id = response.json()["id"]
-    client.post("/users/", json={"username": "testuser", "password": "testpassword"})
-    response = client.post("/token", data={"username": "testuser", "password": "testpassword"})
+    client.post("/api/v1/users/", json={"username": "testuser", "password": "testpassword"})
+    response = client.post("/api/v1/token", data={"username": "testuser", "password": "testpassword"})
     assert response.status_code == 200
     token = response.json()["username"]
 
     response = client.post(
-        "/calculate/",
+        "/api/v1/calculate/",
         json={"operation_id": operation_id},
         headers={"Authorization": f"Bearer {token}"}
     )
@@ -141,16 +141,16 @@ def test_calculate():
 
 
 def test_soft_delete_record():
-    response = client.post("/operations/", json={"type": "addition", "cost": 1.0})
+    response = client.post("/api/v1/operations/", json={"type": "addition", "cost": 1.0})
     assert response.status_code == 200
     operation_id = response.json()["id"]
-    client.post("/users/", json={"username": "testuser", "password": "testpassword"})
-    response = client.post("/token", data={"username": "testuser", "password": "testpassword"})
+    client.post("/api/v1/users/", json={"username": "testuser", "password": "testpassword"})
+    response = client.post("/api/v1/token", data={"username": "testuser", "password": "testpassword"})
     assert response.status_code == 200
     token = response.json()["username"]
 
     response = client.post(
-        "/calculate/",
+        "/api/v1/calculate/",
         json={"operation_id": operation_id},
         headers={"Authorization": f"Bearer {token}"}
     )
@@ -158,11 +158,11 @@ def test_soft_delete_record():
     record_id = response.json()["id"]
 
     # Soft delete the record
-    response = client.delete(f"/records/{record_id}", headers={"Authorization": f"Bearer {token}"})
+    response = client.delete(f"/api/v1/records/{record_id}", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
 
     # Verify the record is soft deleted
-    response = client.get("/records/", headers={"Authorization": f"Bearer {token}"})
+    response = client.get("/api/v1/records/", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     records = response.json()
     for record in records:
