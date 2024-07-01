@@ -3,18 +3,26 @@ import mysql.connector
 from mysql.connector import Error
 from fastapi.testclient import TestClient
 from app.main import app
+import os
 
 client = TestClient(app)
+
+# Set environment variables for the test database
+os.environ['DB_HOST'] = 'localhost'
+os.environ['DB_NAME'] = 'calculator_test'
+os.environ['DB_USER'] = 'calculator_user'
+os.environ['DB_PASSWORD'] = 'password'
+os.environ['DB_POOL_SIZE'] = '5'
 
 
 def create_test_connection():
     connection = None
     try:
         connection = mysql.connector.connect(
-            host='localhost',
-            database='calculator',
-            user='calculator_user',
-            password='password'
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD')
         )
     except Error as e:
         print(f"The error '{e}' occurred")
@@ -62,7 +70,8 @@ def setup_and_teardown():
         amount FLOAT,
         user_balance FLOAT,
         operation_response TEXT,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        deleted BOOLEAN DEFAULT FALSE,
         FOREIGN KEY (operation_id) REFERENCES operations(id),
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
@@ -122,10 +131,39 @@ def test_calculate():
 
     response = client.post(
         "/calculate/",
-        json={"operation_id": operation_id, "user": {'hello': 1}},
+        json={"operation_id": operation_id},
         headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 200
     data = response.json()
     assert "operation_response" in data
     assert data["operation_response"] == "2"
+
+
+def test_soft_delete_record():
+    response = client.post("/operations/", json={"type": "addition", "cost": 1.0})
+    assert response.status_code == 200
+    operation_id = response.json()["id"]
+    client.post("/users/", json={"username": "testuser", "password": "testpassword"})
+    response = client.post("/token", data={"username": "testuser", "password": "testpassword"})
+    assert response.status_code == 200
+    token = response.json()["username"]
+
+    response = client.post(
+        "/calculate/",
+        json={"operation_id": operation_id},
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    record_id = response.json()["id"]
+
+    # Soft delete the record
+    response = client.delete(f"/records/{record_id}", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+
+    # Verify the record is soft deleted
+    response = client.get("/records/", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+    records = response.json()
+    for record in records:
+        assert record["id"] != record_id  # Ensure the soft deleted record is not returned

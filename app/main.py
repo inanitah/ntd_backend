@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from app import routes
+from app.database import db_session_middleware
 
 app = FastAPI()
 
@@ -18,3 +19,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Middleware to handle database connections
+app.middleware("http")(db_session_middleware)
+

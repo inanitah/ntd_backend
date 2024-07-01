@@ -24,17 +24,17 @@ CREATE TABLE IF NOT EXISTS operations (
 
 create_records_table = """
 CREATE TABLE IF NOT EXISTS records (
-    id INT AUTO_INCREMENT, 
+    id INT AUTO_INCREMENT PRIMARY KEY,
     operation_id INT,
     user_id INT,
-    amount FLOAT,
-    user_balance FLOAT,
+    amount DECIMAL(10, 2),
+    user_balance DECIMAL(10, 2),
     operation_response TEXT,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (operation_id) REFERENCES operations(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
 """
 
 cursor = connection.cursor()
