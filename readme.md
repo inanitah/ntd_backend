@@ -168,7 +168,7 @@ Response:
 Headers:
 ```plaintext
     Authorization: Bearer <token>
-    ```
+```
 Perform Calculation
 Endpoint: /api/v1/calculate/
 Method: POST
@@ -194,13 +194,12 @@ Response:
 Headers:
 ```plaintext
     Authorization: Bearer <token>
-    ```
+```
 Get Operations
 Endpoint: /api/v1/operations/
 Method: GET
 Response:
 ```json
-Copy code
 [
     {
         "id": 1,
@@ -212,11 +211,10 @@ Copy code
 Headers:
 ```plaintext
     Authorization: Bearer <token>
-    ```
+```
 Get User Records
 Endpoint: /api/v1/records/
 Method: GET
-
 Response:
 ```json
 [
@@ -235,7 +233,7 @@ Response:
 Headers:
 ```plaintext
     Authorization: Bearer <token>
-    ```
+```
 Delete Record (Soft Delete)
 Endpoint: /api/v1/records/{id}
 Method: DELETE
@@ -255,6 +253,6 @@ Response:
 Headers:
 ```plaintext
     Authorization: Bearer <token>
-    ```
+```
 
 - Note that the token value is obtained from the response of the token endpoint and is provided in the username field.
