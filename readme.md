@@ -17,7 +17,7 @@ Each operation has an associated cost that deducts from the user's balance.
 - Operation records with soft delete functionality
 
 ## Prerequisites
-- Python 3.8+
+- Python 3.8
 - MySQL
 - Heroku CLI (for deployment)
 
@@ -107,11 +107,10 @@ git push heroku main
 
 ### API Documentation
 
-Production url to perform the api calls:
-https://ntdbackend-3703dd1358c1.herokuapp.com
-User and password available for the example: {username: 1, password: 1}
+- Production url to perform the api calls: https://ntdbackend-3703dd1358c1.herokuapp.com
+- User and password available for the example: {username: 1, password: 1}
 
-- User Registration
+User Registration
 - Endpoint: /api/v1/users/
 - Method: POST
 - Request Body:
@@ -216,7 +215,7 @@ Get User Records
 - Endpoint: /api/v1/records/
 - Method: GET
 - Query Parameters:
-- -`search` (optional): Filter records by partial matches.
+- - `search` (optional): Filter records by partial matches.
 - - `skip` (optional): Number of records to skip for pagination.
 - - `limit` (optional): Maximum number of records to return.
 - Response:
@@ -259,4 +258,4 @@ Delete Record (Soft Delete)
     Authorization: Bearer <token>
 ```
 
-### Note that the token value is obtained from the response of the token endpoint and is provided in the username field.
+### Note that the token value is obtained from the response of the token endpoint and is provided in the `username` field.
