@@ -111,17 +111,17 @@ Production url to perform the api calls:
 https://ntdbackend-3703dd1358c1.herokuapp.com
 User and password available for the example: {username: 1, password: 1}
 
-User Registration
-Endpoint: /api/v1/users/
-Method: POST
-Request Body:
+- User Registration
+- Endpoint: /api/v1/users/
+- Method: POST
+- Request Body:
 ```json
 {
     "username": "1",
     "password": "1"
 }
 ```
-Response:
+- Response:
 ```json
 {
     "id": 1,
@@ -131,16 +131,16 @@ Response:
 }
 ```
 User Login
-Endpoint: /api/v1/token
-Method: POST
-Request Body:
+- Endpoint: /api/v1/token
+- Method: POST
+- Request Body:
 ```application/x-www-form-urlencoded
 {
     "username": "1",
     "password": "1"
 }
 ```
-Response:
+- Response:
 ```json
 {
     "username": "1"
@@ -148,16 +148,16 @@ Response:
 ```
 
 Create Operation
-Endpoint: /api/v1/operations/
-Method: POST
-Request Body:
+- Endpoint: /api/v1/operations/
+- Method: POST
+- Request Body:
 ```json
 {
     "type": "addition",
     "cost": 1.0
 }
 ```
-Response:
+- Response:
 ```json
 {
     "id": 1,
@@ -165,20 +165,20 @@ Response:
     "cost": 1.0
 }
 ```
-Headers:
+- Headers:
 ```plaintext
     Authorization: Bearer <token>
 ```
 Perform Calculation
-Endpoint: /api/v1/calculate/
-Method: POST
-Request Body:
+- Endpoint: /api/v1/calculate/
+- Method: POST
+- Request Body:
 ```json
 {
     "operation_id": 1
 }
 ```
-Response:
+- Response:
 ```json
 {
     "id": 1,
@@ -191,14 +191,14 @@ Response:
     "deleted": false
 }
 ```
-Headers:
+- Headers:
 ```plaintext
     Authorization: Bearer <token>
 ```
 Get Operations
-Endpoint: /api/v1/operations/
-Method: GET
-Response:
+- Endpoint: /api/v1/operations/
+- Method: GET
+- Response:
 ```json
 [
     {
@@ -208,14 +208,18 @@ Response:
     }
 ]
 ```
-Headers:
+- Headers:
 ```plaintext
     Authorization: Bearer <token>
 ```
 Get User Records
-Endpoint: /api/v1/records/
-Method: GET
-Response:
+- Endpoint: /api/v1/records/
+- Method: GET
+- Query Parameters:
+- -`search` (optional): Filter records by partial matches.
+- - `skip` (optional): Number of records to skip for pagination.
+- - `limit` (optional): Maximum number of records to return.
+- Response:
 ```json
 [
     {
@@ -230,14 +234,14 @@ Response:
     }
 ]
 ```
-Headers:
+- Headers:
 ```plaintext
     Authorization: Bearer <token>
 ```
 Delete Record (Soft Delete)
-Endpoint: /api/v1/records/{id}
-Method: DELETE
-Response:
+- Endpoint: /api/v1/records/{id}
+- Method: DELETE
+- Response:
 ```json
 {
     "id": 1,
@@ -250,9 +254,9 @@ Response:
     "deleted": true
 }
 ```
-Headers:
+- Headers:
 ```plaintext
     Authorization: Bearer <token>
 ```
 
-- Note that the token value is obtained from the response of the token endpoint and is provided in the username field.
+### Note that the token value is obtained from the response of the token endpoint and is provided in the username field.
