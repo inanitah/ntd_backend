@@ -117,33 +117,33 @@ Method: POST
 Request Body:
 ```json
 {
-    "username": "user@example.com",
-    "password": "yourpassword"
+    "username": "1",
+    "password": "1"
 }
 ```
 Response:
 ```json
 {
     "id": 1,
-    "username": "user@example.com",
+    "username": "1",
     "balance": 100.0,
     "status": "active"
 }
-
+```
 User Login
 Endpoint: /api/v1/token
 Method: POST
 Request Body:
 ```application/x-www-form-urlencoded
 {
-    "username": "user@example.com",
-    "password": "yourpassword"
+    "username": "1",
+    "password": "1"
 }
 ```
 Response:
 ```json
 {
-    "username": "user@example.com"
+    "username": "1"
 }
 ```
 
