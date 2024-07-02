@@ -50,14 +50,31 @@ def get_record(connection: MySQLConnection, record_id: int) -> dict:
 
 
 def get_records(
-        connection: MySQLConnection, skip: int = 0, limit: int = 10, search: str = None, user_id: int = None
+    connection: MySQLConnection, skip: int = 0, limit: int = 10, search: str = None, user_id: int = None
 ) -> list:
     cursor = connection.cursor(dictionary=True)
-    query = "SELECT * FROM records WHERE deleted = FALSE AND user_id = %s"
+    query = """
+    SELECT id, operation_id, user_id, amount, user_balance, operation_response, created_at, deleted 
+    FROM records 
+    WHERE user_id = %s AND deleted = FALSE
+    """
     params = [user_id]
+
     if search:
-        query += " AND operation_response LIKE %s"
-        params.append(f"%{search}%")
+        search_query = """
+        AND (
+            operation_response LIKE %s OR
+            CAST(operation_id AS CHAR) LIKE %s OR
+            CAST(user_id AS CHAR) LIKE %s OR
+            CAST(amount AS CHAR) LIKE %s OR
+            CAST(user_balance AS CHAR) LIKE %s OR
+            created_at LIKE %s
+        )
+        """
+        search_param = f"%{search}%"
+        params.extend([search_param] * 6)
+        query += search_query
+
     query += " LIMIT %s OFFSET %s"
     params.extend([limit, skip])
     cursor.execute(query, tuple(params))

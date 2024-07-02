@@ -47,7 +47,6 @@ async def db_session_middleware(request: Request, call_next):
     except Error as e:
         print(f"Error creating connection pool: {e}")
         raise
-
     response = Response("Internal server error", status_code=500)
     try:
         request.state.db = connection_pool.get_connection()

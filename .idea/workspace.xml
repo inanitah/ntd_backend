@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="64567cfa-8ab8-4887-b12e-084dc62d3378" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_calculator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1719797657466</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Finishes">
+      <created>1719877175968</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1719877175968</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -243,7 +250,8 @@
     <MESSAGE value="Add ntdfrontend url for CORS" />
     <MESSAGE value="A lot of enhacements" />
     <MESSAGE value="Add requirements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add requirements" />
+    <MESSAGE value="Finishes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finishes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
