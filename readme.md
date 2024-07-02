@@ -147,8 +147,6 @@ Response:
 }
 ```
 
-- In order to make the next calls need to take the tken from the /api/v1/token endpoint and paste it in the header:
-Authorization: Bearer <token>
 Create Operation
 Endpoint: /api/v1/operations/
 Method: POST
@@ -167,6 +165,10 @@ Response:
     "cost": 1.0
 }
 ```
+Headers:
+```plaintext
+    Authorization: Bearer <token>
+    ```
 Perform Calculation
 Endpoint: /api/v1/calculate/
 Method: POST
@@ -189,6 +191,10 @@ Response:
     "deleted": false
 }
 ```
+Headers:
+```plaintext
+    Authorization: Bearer <token>
+    ```
 Get Operations
 Endpoint: /api/v1/operations/
 Method: GET
@@ -203,6 +209,10 @@ Copy code
     }
 ]
 ```
+Headers:
+```plaintext
+    Authorization: Bearer <token>
+    ```
 Get User Records
 Endpoint: /api/v1/records/
 Method: GET
@@ -222,6 +232,10 @@ Response:
     }
 ]
 ```
+Headers:
+```plaintext
+    Authorization: Bearer <token>
+    ```
 Delete Record (Soft Delete)
 Endpoint: /api/v1/records/{id}
 Method: DELETE
@@ -238,5 +252,9 @@ Response:
     "deleted": true
 }
 ```
+Headers:
+```plaintext
+    Authorization: Bearer <token>
+    ```
 
-
+- Note that the token value is obtained from the response of the token endpoint and is provided in the username field.
